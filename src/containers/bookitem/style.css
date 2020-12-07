@@ -1,0 +1,87 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 4.5px;
+  color: black;
+  transition: all 0.1s ease-in;
+}
+.item:hover {
+  margin-right: 4px;
+  margin-left: -4px;
+  margin-top: -4px;
+  margin-bottom: 4px;
+  box-shadow: 12px 12px 6px 1px rgba(0, 0, 0, 0.125);
+}
+.item-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.item-header {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.item-name {
+  display: block;
+  padding: 1em 0;
+  max-width: 180px;
+  line-height: 0.9em;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+}
+.like-button {
+  display: block;
+  position: absolute;
+  top: 18%;
+  right: 5%;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 25px;
+  color: red;
+  cursor: pointer;
+}
+.toShop-button {
+  display: block;
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 22px;
+  color: rgb(83, 212, 8);
+  cursor: pointer;
+}
+
+.item-author {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: 450;
+  line-height: 0.875rem;
+}
+
+.item-price {
+  margin: 0.3em 0;
+  font-size: 24px;
+  color: #5c99e9;
+}
+
+.item-image {
+  margin: 10px 5px 15px 5px;
+  width: 160px;
+  height: 200px;
+}

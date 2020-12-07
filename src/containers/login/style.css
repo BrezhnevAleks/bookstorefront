@@ -1,0 +1,83 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.sign-input {
+  margin: 10px auto;
+  padding: 10px 30px;
+  background: #eceff1;
+  border: 2px solid #5c99e9;
+  border-radius: 5px;
+  color: black;
+  line-height: 1.2;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+}
+
+.sign-input-denied {
+  margin: 10px auto;
+  padding: 10px 30px;
+  background: #eceff1;
+  border: 2px solid rgb(194, 91, 91);
+  border-radius: 5px;
+  color: black;
+  line-height: 1.2;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+}
+
+.sign-submit {
+  padding: 10px 30px;
+  margin-left: 40px;
+  background: #5c6be9;
+  border: none;
+  border-radius: 5px;
+  line-height: 26px;
+  text-align: center;
+  color: white;
+  letter-spacing: 0.1em;
+  font-size: inherit;
+}
+
+input[type="submit"]:hover {
+  cursor: pointer;
+}
+.sign-link {
+  padding: 10px 30px;
+  background: #e9ad5c;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  letter-spacing: 0.1em;
+  line-height: 26px;
+}
+
+h1 {
+  font-size: 42px;
+  font-weight: 100;
+  text-align: center;
+  color: rgba(7, 133, 7, 0.719);
+}
+
+.sign-text {
+  margin: 20px 0;
+  font-size: 16px;
+}
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

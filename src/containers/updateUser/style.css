@@ -1,0 +1,75 @@
+.update {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.update-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.update-cancel {
+  margin: 10px;
+  padding: 8px 20px;
+  line-height: 26px;
+  text-align: center;
+  color: white;
+  letter-spacing: 0.1em;
+  background: #af4734;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.update-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+.update-values {
+  line-height: 1.2;
+  margin: 10px auto;
+  padding: 10px 30px;
+  color: black;
+  letter-spacing: 0.1em;
+  font-size: 16px;
+}
+.update-input {
+  line-height: 1.2;
+  margin: 10px auto;
+  padding: 10px 30px;
+  color: black;
+  letter-spacing: 0.1em;
+  background: #eceff1;
+  border-radius: 5px;
+  font-size: 16px;
+  border: 2px solid #5c99e9;
+}
+
+.update-submit {
+  padding: 10px 30px;
+  line-height: 26px;
+  text-align: center;
+  color: white;
+  letter-spacing: 0.1em;
+  background: #5c6be9;
+  border-radius: 5px;
+  font-size: inherit;
+  border: none;
+}
+
+input[type="submit"]:hover {
+  cursor: pointer;
+}
+
+.update-text {
+  margin: 20px 0;
+  font-size: 16px;
+}
+.update-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
