@@ -4,8 +4,8 @@ import Select from "react-select";
 class BooksFilter extends React.Component {
   render() {
     const options = [
-      { value: "default", label: "По умолчанию", selected: true },
-      { value: "expensive", label: "Сначала дороже" },
+      { value: "id", label: "По умолчанию", selected: true },
+      { value: "price", label: "Сначала дороже" },
       { value: "name", label: "По названию" },
       { value: "rating", label: "По рейтингу" },
     ];

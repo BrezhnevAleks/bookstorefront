@@ -11,7 +11,7 @@ export const booksConfirmation = () => ({
   completed: false,
 });
 
-export const getBooks = (filter = `default`, genre = `all`) => {
+export const getBooks = (filter = `id`, genre = `all`) => {
   return async (dispatch) => {
     dispatch(booksFetchStarted());
     try {

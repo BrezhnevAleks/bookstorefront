@@ -11,7 +11,7 @@ import { Grid } from "@material-ui/core";
 class BookList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { filter: "default" };
+    this.state = { filter: "id" };
   }
 
   handleOnChangeFilter = (e) => {
@@ -51,7 +51,7 @@ class BookList extends React.Component {
   };
 
   render() {
-    const { genres, books, loading, getBooks } = this.props;
+    const { genres, books, loading } = this.props;
 
     return (
       <div>

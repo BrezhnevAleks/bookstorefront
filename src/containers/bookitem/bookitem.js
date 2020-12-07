@@ -34,13 +34,21 @@ class BookItem extends React.Component {
           <FontAwesomeIcon
             className="toShop-button"
             onClick={this.handleOnClickToShoplist}
-            icon={shoplist.includes(item) ? faShoppingBasket : faPlus}
+            icon={
+              shoplist.some((shoplistItem) => shoplistItem.id === item.id)
+                ? faShoppingBasket
+                : faPlus
+            }
           />
           <h3 className="item-name">{name}</h3>
           <FontAwesomeIcon
             className="like-button"
             onClick={this.handleOnClickLike}
-            icon={favorites.some((s) => s === item) ? solidHeart : regHeart}
+            icon={
+              favorites.some((favorittesItem) => favorittesItem.id === item.id)
+                ? solidHeart
+                : regHeart
+            }
           />
         </div>
 
