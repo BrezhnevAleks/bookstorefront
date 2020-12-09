@@ -1,9 +1,33 @@
 import React from "react";
-import connect from "./connect";
-import { withRouter } from "react-router";
-import { compose } from "redux";
 import Select from "react-select";
+import PropTypes from "prop-types";
 import "./style.css";
+
+const customStyles = {
+  control: (base) => ({
+    ...base,
+    width: 265,
+    fontSize: 16,
+    padding: "2px 22px",
+
+    background: "#eceff1",
+    borderRadius: "5px",
+    border: "2px solid #5c99e9",
+    margin: "10px auto",
+  }),
+  menu: (base) => ({
+    ...base,
+    width: 265,
+    borderRadius: 0,
+    marginTop: 0,
+    margin: "0px 45%",
+  }),
+  menuList: (base) => ({
+    ...base,
+    padding: 0,
+    margin: "0px auto",
+  }),
+};
 
 class NewBook extends React.Component {
   constructor(props) {
@@ -20,8 +44,8 @@ class NewBook extends React.Component {
 
   handleChange = (e) => {
     switch (e.target.name) {
-      case "image":
-        return this.setState({ bookcover: e.target.files[0] });
+      case "bookcover":
+        return this.setState({ [e.target.name]: e.target.files[0] });
       case "name":
         return this.setState({ name: e.target.value });
       case "author":
@@ -32,6 +56,7 @@ class NewBook extends React.Component {
         return this.setState({ price: e.target.value });
       case "description":
         return this.setState({ description: e.target.value });
+      default:
     }
   };
 
@@ -43,7 +68,7 @@ class NewBook extends React.Component {
     e.preventDefault();
     const { bookcover, name, author, genre, price, description } = this.state;
     const { createBook } = this.props;
-    let formData = new FormData();
+    const formData = new FormData();
 
     formData.append("bookcover", bookcover);
     formData.append("name", name);
@@ -65,31 +90,7 @@ class NewBook extends React.Component {
       },
       ...genres,
     ];
-    const customStyles = {
-      control: (base, state) => ({
-        ...base,
-        width: 265,
-        fontSize: 16,
-        padding: "2px 22px",
 
-        background: "#eceff1",
-        borderRadius: "5px",
-        border: "2px solid #5c99e9",
-        margin: "10px auto",
-      }),
-      menu: (base) => ({
-        ...base,
-        width: 265,
-        borderRadius: 0,
-        marginTop: 0,
-        margin: "0px 45%",
-      }),
-      menuList: (base) => ({
-        ...base,
-        padding: 0,
-        margin: "0px auto",
-      }),
-    };
     const { bookcover } = this.state;
 
     return (
@@ -106,7 +107,7 @@ class NewBook extends React.Component {
           <input
             type="file"
             id="image"
-            name="image"
+            name="bookcover"
             onChange={(e) => this.handleChange(e)}
           />
           <input
@@ -169,4 +170,10 @@ class NewBook extends React.Component {
     );
   }
 }
-export default compose(withRouter, connect)(NewBook);
+export default NewBook;
+
+NewBook.propTypes = {
+  handleOnClickOk: PropTypes.func.isRequired,
+  createBook: PropTypes.func.isRequired,
+  genres: PropTypes.node.isRequired,
+};

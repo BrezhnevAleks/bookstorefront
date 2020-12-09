@@ -1,13 +1,14 @@
 import React from "react";
-import connect from "./connect";
-import defaultCover from "../../images/defaultCover.png";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
+import Rating from "@material-ui/lab/Rating";
 import ReviewItem from "../../components/reviewitem/reviewitem";
 import Header from "../header/header";
-import Rating from "@material-ui/lab/Rating";
+import connect from "./connect";
+import defaultCover from "../../images/defaultCover.png";
 import "./style.css";
 
 class BookPage extends React.Component {
@@ -15,8 +16,6 @@ class BookPage extends React.Component {
     super(props);
     const {
       user: { shoplist, favorites },
-      book: { rating },
-      reviews,
     } = this.props;
 
     this.state = {
@@ -24,8 +23,7 @@ class BookPage extends React.Component {
       favorites,
       shoplist,
       rating: null,
-      reviews: reviews,
-      rate: Number(rating),
+      // rate: Number(rating),
     };
   }
 
@@ -34,26 +32,26 @@ class BookPage extends React.Component {
       match: {
         params: { id },
       },
-      reviews,
       getOneBook,
       getReviews,
     } = this.props;
 
     getOneBook(id);
     getReviews(id);
-    this.setState({ reviews });
   }
-  handleOnClickFavorites = (e) => {
+
+  handleOnClickFavorites = () => {
     const { book, user, toFavorites } = this.props;
-    let { favorites } = this.state;
+    const { favorites } = this.state;
 
     toFavorites(user.id, book.id);
     favorites.push(Number(book.id));
     this.setState({ favorites });
   };
-  handleOnClickBasket = (e) => {
+
+  handleOnClickBasket = () => {
     const { book, user, toShopList } = this.props;
-    let { shoplist } = this.state;
+    const { shoplist } = this.state;
 
     toShopList(user.id, book.id);
     shoplist.push(Number(book.id));
@@ -82,6 +80,7 @@ class BookPage extends React.Component {
 
     await getReviews(id);
   };
+
   render() {
     let {
       match: {
@@ -113,7 +112,7 @@ class BookPage extends React.Component {
               <div className="description">
                 <h4 className="description-title">Описание</h4>
                 <p className="description-text">
-                  {description ? description : "У этой книги нет описания"}
+                  {description || "У этой книги нет описания"}
                 </p>
               </div>
               <form
@@ -127,7 +126,6 @@ class BookPage extends React.Component {
                   value={text}
                   onChange={(e) => this.handleReviewOnChange(e)}
                   placeholder="Пожалуйста, оставьте отзыв об этой книге"
-                  style={{ border: "1px solid black" }}
                 />
 
                 <input
@@ -161,7 +159,7 @@ class BookPage extends React.Component {
               ) : (
                 <Link
                   className="book-buttons-basket-active"
-                  to={{ pathname: `/shoplist` }}
+                  to={{ pathname: "/shoplist" }}
                 >
                   Перейти в корзину
                 </Link>
@@ -180,7 +178,7 @@ class BookPage extends React.Component {
               ) : (
                 <Link
                   className="book-buttons-favorites-active"
-                  to={{ pathname: `/favorites` }}
+                  to={{ pathname: "/favorites" }}
                 >
                   <FontAwesomeIcon
                     className="book-buttons-favorites-icon"
@@ -221,3 +219,34 @@ class BookPage extends React.Component {
   }
 }
 export default connect(BookPage);
+
+BookPage.propTypes = {
+  toFavorites: PropTypes.func.isRequired,
+  toShopList: PropTypes.func.isRequired,
+  addReview: PropTypes.func.isRequired,
+  getReviews: PropTypes.func.isRequired,
+  getOneBook: PropTypes.func.isRequired,
+  rate: PropTypes.number.isRequired,
+  book: PropTypes.objectOf(
+    PropTypes.oneOfType(
+      [PropTypes.number,
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.object)],
+    ),
+  ).isRequired,
+  match: PropTypes.objectOf(PropTypes.string).isRequired,
+  user: PropTypes.objectOf(
+    PropTypes.oneOfType(
+      [PropTypes.number,
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.object)],
+    ),
+  ).isRequired,
+  reviews: PropTypes.arrayOf(
+    PropTypes.oneOfType(
+      [PropTypes.number,
+        PropTypes.string,
+      ],
+    ),
+  ).isRequired,
+};

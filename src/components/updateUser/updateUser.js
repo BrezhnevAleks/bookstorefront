@@ -1,8 +1,8 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
-import connect from "./connect";
 import "./style.css";
+import PropTypes from "prop-types";
 
 class UpdatePage extends React.Component {
   constructor(props) {
@@ -27,13 +27,15 @@ class UpdatePage extends React.Component {
       case "password":
         return this.setState({ newPassword: e.target.value });
       default:
-        return;
+        return null;
     }
   };
+
   handleOnClickChange = (e) => {
     this.setState({ flag: e.target.id });
   };
-  handleOnClickCancel = (e) => {
+
+  handleOnClickCancel = () => {
     const {
       user: { login, email },
     } = this.props;
@@ -44,11 +46,13 @@ class UpdatePage extends React.Component {
       flag: "none",
     });
   };
+
   handleOnBlur = () => {
     this.setState({
       flag: "none",
     });
   };
+
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -71,7 +75,7 @@ class UpdatePage extends React.Component {
         <h1>Изменить данные</h1>
         <p className="update-text">
           Введите данные, которые необходмо обновить и нажмите кнопку
-          "Подтвердить"
+          `&ldquo;`Подтвердить`&ldquo;`
         </p>
         <div className="update-body">
           <form
@@ -98,7 +102,7 @@ class UpdatePage extends React.Component {
                 id={"login"}
               >
                 {newLogin}
-                <FontAwesomeIcon style={{ marginLeft: "5px" }} icon={faPen} />
+                <FontAwesomeIcon className={"update-icon"} icon={faPen} />
               </span>
             )}
             <label>Пароль:</label>
@@ -120,7 +124,7 @@ class UpdatePage extends React.Component {
                 id={"password"}
               >
                 Изменить пароль
-                <FontAwesomeIcon style={{ marginLeft: "5px" }} icon={faPen} />
+                <FontAwesomeIcon className={"update-icon"} icon={faPen} />
               </span>
             )}
             <label>Email</label>
@@ -142,7 +146,7 @@ class UpdatePage extends React.Component {
                 id={"email"}
               >
                 {newEmail}
-                <FontAwesomeIcon style={{ marginLeft: "5px" }} icon={faPen} />
+                <FontAwesomeIcon className={"update-icon"} icon={faPen} />
               </span>
             )}
 
@@ -167,4 +171,10 @@ class UpdatePage extends React.Component {
     );
   }
 }
-export default connect(UpdatePage);
+export default UpdatePage;
+
+UpdatePage.propTypes = {
+  updateUser: PropTypes.func.isRequired,
+  handleOnClickOk: PropTypes.func.isRequired,
+  user: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};

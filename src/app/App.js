@@ -5,12 +5,13 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import RegisterPage from "../containers/registration/registerpage.js";
-import LoginPage from "../containers/login/loginpage.js";
+import PropTypes from "prop-types";
+import { createBrowserHistory } from "history";
+import RegisterPage from "../components/registration/registerpage.js";
+import LoginPage from "../components/login/loginpage.js";
 import connect from "./connect";
 import PrivateRoute from "../routes/privateroute";
 import BookPage from "../containers/bookpage/bookpage.js";
-import NewBook from "../containers/createbook/newbook.js";
 import ChangeBook from "../containers/changebook/changebook.js";
 import FavoritesList from "../containers/favorites/favorites.js";
 import ShopList from "../containers/shoplist/shoplist.js";
@@ -18,11 +19,18 @@ import BookList from "../containers/booklist/booklist";
 import Profile from "../containers/profile/profile.js";
 import { setAuthToken } from "../axios.js";
 
+const history = createBrowserHistory();
 class App extends React.Component {
   login(data, routeProps) {
     const { pathname } = routeProps.location;
-
-    const page = pathname === "/login" ? <LoginPage /> : <RegisterPage />;
+    const { loginUser, createUser, error } = this.props;
+    const page =
+      pathname === "/login" ? (
+        <LoginPage loginUser={loginUser} error={error} />
+      ) : (
+        <RegisterPage createUser={createUser} error={error} />
+      );
+    // eslint-disable-next-line no-prototype-builtins
     return data.hasOwnProperty("id") ? <Redirect to="/" /> : page;
   }
 
@@ -31,11 +39,12 @@ class App extends React.Component {
     setAuthToken(localStorage.getItem("authToken"));
     getUserByToken();
   }
+
   render() {
     const { data } = this.props;
 
     return (
-      <Router>
+      <Router history={history}>
         <Switch>
           <Route
             path="/login"
@@ -55,12 +64,12 @@ class App extends React.Component {
           />
           <PrivateRoute
             user={data}
-            path="/genre/:value"
+            path="/?genre=&filter="
             component={BookList}
             exact
           />
           <PrivateRoute user={data} path="/" component={BookList} exact />
-          <PrivateRoute user={data} path="/newbook" component={NewBook} exact />
+
           <PrivateRoute
             user={data}
             path="/books/change/:id"
@@ -86,3 +95,11 @@ class App extends React.Component {
   }
 }
 export default connect(App);
+
+App.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  error: PropTypes.node.isRequired,
+  createUser: PropTypes.func.isRequired,
+  getUserByToken: PropTypes.func.isRequired,
+  data: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+};

@@ -6,15 +6,15 @@
   color: #5c99e9;
 }
 .menu {
-  display: flex;
-  justify-content: space-around;
   margin-bottom: 50px;
-  padding: 20px 0px;
+  padding: 25px 16px;
   width: 100%;
   background-color: #5dc8e9;
-
   font-size: 20px;
   font-weight: 500;
+}
+.header-container {
+  padding: 0 5%;
 }
 .menu-icons {
   display: flex;

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
-import * as bookActions from "../../actions/bookActions";
-import * as userActions from "../../actions/userActions";
+import { toFavorites, toShopList } from "../../actions/userActions";
+
 const mapStateToProps = ({ user: { data } }) => {
   return {
     shoplist: data.shoplist,
@@ -9,9 +9,8 @@ const mapStateToProps = ({ user: { data } }) => {
 };
 
 const mapDispatchToProps = {
-  ...bookActions,
-  ...userActions,
+  toFavorites,
+  toShopList,
 };
 
-export default (container) =>
-  connect(mapStateToProps, mapDispatchToProps)(container);
+export default (container) => connect(mapStateToProps, mapDispatchToProps)(container);

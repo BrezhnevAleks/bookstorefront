@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
-import * as userActions from "../../actions/userActions";
-import * as bookActions from "../../actions/bookActions";
+import { signOutUser } from "../../actions/userActions";
+import { getBooks } from "../../actions/bookActions";
 
 const mapStateToProps = ({ user: { data } }) => {
   return {
@@ -9,9 +9,8 @@ const mapStateToProps = ({ user: { data } }) => {
 };
 
 const mapDispatchToProps = {
-  ...userActions,
-  ...bookActions,
+  signOutUser,
+  getBooks,
 };
 
-export default (container) =>
-  connect(mapStateToProps, mapDispatchToProps)(container);
+export default (container) => connect(mapStateToProps, mapDispatchToProps)(container);

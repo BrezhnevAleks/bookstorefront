@@ -1,10 +1,11 @@
 import React from "react";
-import connect from "./connect";
 import { withRouter } from "react-router";
 import { compose } from "redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import Header from "../header/header";
-import Message from "../message/message";
+import connect from "./connect";
+import Message from "../../components/message/message";
 
 class ChangeBook extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class ChangeBook extends React.Component {
       description,
     };
   }
+
   handleChange = (e) => {
     switch (e.target.name) {
       case "image":
@@ -30,21 +32,25 @@ class ChangeBook extends React.Component {
         return this.setState({ price: e.target.value });
       case "description":
         return this.setState({ description: e.target.value });
+      default:
+        return null;
     }
   };
-  handleChangeSelect = (e) => {
-    this.setState({ genre: e.value });
-  };
+
+  // handleChangeSelect = (e) => {
+  //   this.setState({ genre: e.value });
+  // };
+
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { bookcover, name, author, price, genre, description } = this.state;
+    const { bookcover, name, author, price, description } = this.state;
     const {
       changeBook,
       match: {
         params: { id },
       },
     } = this.props;
-    let formData = new FormData();
+    const formData = new FormData();
 
     formData.append("bookcover", bookcover);
     formData.append("name", name);
@@ -82,10 +88,13 @@ class ChangeBook extends React.Component {
         params: { id },
       },
       completed,
+      error,
+      userConfirmation,
+      booksConfirmation,
     } = this.props;
 
     return (
-      <div style={{ height: "80%" }}>
+      <div className={"change-book"}>
         <Header />
         {completed ? (
           <Link
@@ -94,7 +103,11 @@ class ChangeBook extends React.Component {
               state: { fromDashboard: true },
             }}
           >
-            <Message />
+            <Message
+              error={error}
+              userConfirmation={userConfirmation}
+              booksConfirmation={booksConfirmation}
+            />
           </Link>
         ) : (
           <div>
@@ -145,7 +158,6 @@ class ChangeBook extends React.Component {
                 rows="10"
                 cols="50"
                 className="new-book-description"
-                style={{ width: "350px" }}
                 onChange={this.handleChange}
                 placeholder="Добавьте описание для книги"
               />
@@ -162,3 +174,24 @@ class ChangeBook extends React.Component {
   }
 }
 export default compose(withRouter, connect)(ChangeBook);
+
+ChangeBook.propTypes = {
+  userConfirmation: PropTypes.func.isRequired,
+  booksConfirmation: PropTypes.func.isRequired,
+  getOneBook: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  changeBook: PropTypes.func.isRequired,
+  completed: PropTypes.bool.isRequired,
+  error: PropTypes.node.isRequired,
+  match: PropTypes.objectOf(PropTypes.string).isRequired,
+  book: PropTypes.objectOf(
+    PropTypes.oneOfType(
+      [PropTypes.number,
+        PropTypes.string,
+      ],
+    ),
+  ).isRequired,
+};

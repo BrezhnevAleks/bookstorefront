@@ -1,18 +1,27 @@
 import { connect } from "react-redux";
-import * as bookActions from "../../actions/bookActions";
-import * as userActions from "../../actions/userActions";
-const mapStateToProps = ({ user: { data, shoplist }, booklist, user }) => {
+import { booksConfirmation, createBook } from "../../actions/bookActions";
+import { userConfirmation, updateUser } from "../../actions/userActions";
+
+const mapStateToProps = ({
+  user: { data, shoplist },
+  booklist,
+  user,
+  booklist: { genres },
+}) => {
   return {
+    genres,
     shoplist,
     user: data,
     completed: user.completed || booklist.completed,
+    error: user.error || booklist.error,
   };
 };
 
 const mapDispatchToProps = {
-  ...bookActions,
-  ...userActions,
+  booksConfirmation,
+  createBook,
+  userConfirmation,
+  updateUser,
 };
 
-export default (container) =>
-  connect(mapStateToProps, mapDispatchToProps)(container);
+export default (container) => connect(mapStateToProps, mapDispatchToProps)(container);

@@ -1,5 +1,6 @@
 import React from "react";
 import "./style.css";
+import PropTypes from "prop-types";
 
 class ReviewItem extends React.Component {
   render() {
@@ -20,3 +21,14 @@ class ReviewItem extends React.Component {
 }
 
 export default ReviewItem;
+
+ReviewItem.propTypes = {
+  item: PropTypes.objectOf(
+    PropTypes.oneOfType(
+      [PropTypes.number,
+        PropTypes.string,
+        PropTypes.object,
+      ],
+    ),
+  ).isRequired,
+};

@@ -73,3 +73,7 @@ input[type="submit"]:hover {
   align-items: center;
   justify-content: center;
 }
+
+.update-icon {
+  margin-left: "5px";
+}

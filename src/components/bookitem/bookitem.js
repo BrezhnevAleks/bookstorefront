@@ -1,26 +1,27 @@
 import React from "react";
 import "./style.css";
-import defaultCover from "../../images/defaultCover.png";
-import connect from "./connect";
+import PropTypes from "prop-types";
 import Rating from "@material-ui/lab/Rating";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faHeart as regHeart } from "@fortawesome/free-regular-svg-icons/faHeart";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import defaultCover from "../../images/defaultCover.png";
 
 class BookItem extends React.Component {
-  handleOnClickLike = (e) => {
-    const { item, user, toFavorites, getFavoritesList } = this.props;
+  handleOnClickLike = () => {
+    const { item, user, toFavorites } = this.props;
 
     toFavorites(user.id, item.id);
   };
-  handleOnClickToShoplist = (e) => {
+
+  handleOnClickToShoplist = () => {
     const { item, user, toShopList } = this.props;
 
     toShopList(user.id, item.id);
   };
+
   render() {
     const {
       item,
@@ -74,4 +75,23 @@ class BookItem extends React.Component {
   }
 }
 
-export default connect(BookItem);
+export default BookItem;
+
+BookItem.propTypes = {
+  toFavorites: PropTypes.func.isRequired,
+  toShopList: PropTypes.func.isRequired,
+  user: PropTypes.objectOf(
+    PropTypes.oneOfType(
+      [PropTypes.number,
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.object)],
+    ),
+  ).isRequired,
+  item: PropTypes.objectOf(
+    PropTypes.oneOfType(
+      [PropTypes.number,
+        PropTypes.string,
+      ],
+    ),
+  ).isRequired,
+};

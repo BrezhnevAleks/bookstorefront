@@ -1,6 +1,6 @@
 import React from "react";
-import connect from "./connect";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import "./style.css";
 
 class LoginPage extends React.Component {
@@ -9,6 +9,7 @@ class LoginPage extends React.Component {
 
     this.state = { email: "", password: "", error: "" };
   }
+
   handleChange = (e) => {
     this.setState({ error: "" });
     switch (e.target.name) {
@@ -16,6 +17,8 @@ class LoginPage extends React.Component {
         return this.setState({ email: e.target.value });
       case "userPassword":
         return this.setState({ password: e.target.value });
+      default:
+        return null;
     }
   };
 
@@ -68,4 +71,9 @@ class LoginPage extends React.Component {
   }
 }
 
-export default connect(LoginPage);
+export default LoginPage;
+
+LoginPage.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  error: PropTypes.node.isRequired,
+};

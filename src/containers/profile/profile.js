@@ -1,37 +1,61 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import connect from "./connect";
-import Header from "../header/header";
-import NewBook from "../createbook/newbook.js";
-import UpdatePage from "../updateUser/updateUser";
-import Message from "../message/message";
 import { Grid } from "@material-ui/core";
 import "./style.css";
+import connect from "./connect";
+import Header from "../header/header";
+import NewBook from "../../components/createbookpage/newbookpage.js";
+import UpdatePage from "../../components/updateUser/updateUser";
+import Message from "../../components/message/message";
 
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    const { completed } = this.props;
-    this.state = { feature: "add", completed };
+    this.state = { feature: "add" };
   }
+
   handleOnClickFeatureButton = (e) => {
     return this.setState({ feature: e.target.value });
   };
-  handleOnClickOk = () => {
-    this.setState({ completed: false });
-  };
 
   handleOption = (value, complete) => {
+    const {
+      genres,
+      createBook,
+      user,
+      updateUser,
+      error,
+      userConfirmation,
+      booksConfirmation,
+    } = this.props;
     if (complete) {
-      return <Message />;
+      return (
+        <Message
+          error={error}
+          userConfirmation={userConfirmation}
+          booksConfirmation={booksConfirmation}
+        />
+      );
     }
-    switch (value) {
-      case "add":
-        return <NewBook handleOnClickOk={this.handleOnClickOk} />;
-      case "update":
-        return <UpdatePage handleOnClickOk={this.handleOnClickOk} />;
+    if (value === "add") {
+      return (
+        <NewBook
+          genres={genres}
+          createBook={createBook}
+        />
+      );
+    }
+    if (value === "update") {
+      return (
+        <UpdatePage
+          user={user}
+          updateUser={updateUser}
+        />
+      );
     }
   };
+
   render() {
     const {
       user: { login, email, shoplist, favorites },
@@ -43,6 +67,7 @@ class Profile extends React.Component {
       <div>
         <Header />
         <Grid
+        className={"profile-container"}
           container
           item
           spacing={4}
@@ -50,7 +75,6 @@ class Profile extends React.Component {
           direction="row"
           justify="space-between"
           alignItems="flex-start"
-          style={{ padding: "0 15%" }}
         >
           <Grid
             container
@@ -128,3 +152,20 @@ class Profile extends React.Component {
 }
 
 export default connect(Profile);
+
+Profile.propTypes = {
+  updateUser: PropTypes.func.isRequired,
+  booksConfirmation: PropTypes.func.isRequired,
+  userConfirmation: PropTypes.func.isRequired,
+  createBook: PropTypes.func.isRequired,
+  user: PropTypes.objectOf(
+    PropTypes.oneOfType(
+      [PropTypes.number,
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.object)],
+    ),
+  ).isRequired,
+  completed: PropTypes.bool.isRequired,
+  genres: PropTypes.arrayOf(PropTypes.node).isRequired,
+  error: PropTypes.node.isRequired,
+};

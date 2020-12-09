@@ -1,49 +1,70 @@
 import axios from "axios";
-import { axiosInstance } from "../axios.js";
-import { setAuthToken } from "../axios.js";
-import * as type from "../constants";
+// eslint-disable-next-line import/no-cycle
+import { axiosInstance, setAuthToken } from "../axios";
+import {
+  ADD_USER,
+  USER_CONFIRM_COMPLETION,
+  SIGN_OUT_USER,
+  GET_BY_TOKEN_SUCCESS,
+  GET_BY_TOKEN_STARTED,
+  GET_BY_TOKEN_FAILURE,
+  USER_CREATE_SUCCESS,
+  USER_CREATE_STARTED,
+  USER_CREATE_FAILURE,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_STARTED,
+  USER_UPDATE_FAILURE,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_STARTED,
+  USER_LOGIN_FAILURE,
+  ADD_FAVORITES_SUCCESS,
+  ADD_FAVORITES_STARTED,
+  ADD_FAVORITES_FAILURE,
+  ADD_SHOPLIST_SUCCESS,
+  ADD_SHOPLIST_STARTED,
+  ADD_SHOPLIST_FAILURE,
+} from "../constants";
 
 export const addUser = (data) => ({
-  type: type.ADD_USER,
+  type: ADD_USER,
   data,
 });
 
 export const userConfirmation = () => ({
-  type: type.USER_CONFIRM_COMPLETION,
+  type: USER_CONFIRM_COMPLETION,
   completed: false,
 });
 
 export const signOutUser = () => ({
-  type: type.SIGN_OUT_USER,
+  type: SIGN_OUT_USER,
 });
 
 export const getUserByToken = () => {
   return async (dispatch) => {
     dispatch(getUserByStarted());
     try {
-      const response = await axiosInstance.get(`crud/bytoken`);
+      const response = await axiosInstance.get("crud/bytoken");
       const {
         data: { user },
       } = response;
       dispatch(getUserBySuccess(user));
     } catch (err) {
-      console.log(err.message);
       dispatch(getUserByFailure(err.message));
     }
   };
 };
 
 export const getUserBySuccess = (data) => ({
-  type: type.GET_BY_TOKEN_SUCCESS,
+  type: GET_BY_TOKEN_SUCCESS,
   data,
 });
 
 export const getUserByStarted = () => ({
-  type: type.GET_BY_TOKEN_STARTED,
+  type: GET_BY_TOKEN_STARTED,
 });
 
 export const getUserByFailure = (error) => ({
-  type: type.GET_BY_TOKEN_FAILURE,
+  type: GET_BY_TOKEN_FAILURE,
   error,
 });
 
@@ -51,7 +72,7 @@ export const createUser = (login, email, password) => {
   return async (dispatch) => {
     dispatch(createStarted());
     try {
-      const response = await axios.post(`http://localhost:4000/crud/create`, {
+      const response = await axios.post("http://localhost:4000/crud/create", {
         login,
         email,
         password,
@@ -71,16 +92,16 @@ export const createUser = (login, email, password) => {
 };
 
 export const createSuccess = (data) => ({
-  type: type.USER_CREATE_SUCCESS,
+  type: USER_CREATE_SUCCESS,
   data,
 });
 
 export const createStarted = () => ({
-  type: type.USER_CREATE_STARTED,
+  type: USER_CREATE_STARTED,
 });
 
 export const createFailure = (error) => ({
-  type: type.USER_CREATE_FAILURE,
+  type: USER_CREATE_FAILURE,
   error,
 });
 
@@ -88,7 +109,7 @@ export const updateUser = (id, login, email, password) => {
   return async (dispatch) => {
     dispatch(updateStarted());
     try {
-      const response = await axiosInstance.post(`crud/update`, {
+      const response = await axiosInstance.post("crud/update", {
         id,
         login,
         email,
@@ -106,17 +127,17 @@ export const updateUser = (id, login, email, password) => {
 };
 
 export const updateSuccess = (data) => ({
-  type: type.USER_UPDATE_SUCCESS,
+  type: USER_UPDATE_SUCCESS,
   data,
   completed: true,
 });
 
 export const updateStarted = () => ({
-  type: type.USER_UPDATE_STARTED,
+  type: USER_UPDATE_STARTED,
 });
 
 export const updateFailure = (error) => ({
-  type: type.USER_UPDATE_FAILURE,
+  type: USER_UPDATE_FAILURE,
   error,
 });
 
@@ -124,7 +145,7 @@ export const loginUser = (email, password) => {
   return async (dispatch) => {
     dispatch(loginStarted());
     try {
-      const response = await axios.post(`http://localhost:4000/crud/login`, {
+      const response = await axios.post("http://localhost:4000/crud/login", {
         email,
         password,
       });
@@ -141,16 +162,16 @@ export const loginUser = (email, password) => {
 };
 
 export const loginSuccess = (data) => ({
-  type: type.USER_LOGIN_SUCCESS,
+  type: USER_LOGIN_SUCCESS,
   data,
 });
 
 export const loginStarted = () => ({
-  type: type.USER_LOGIN_STARTED,
+  type: USER_LOGIN_STARTED,
 });
 
 export const loginFailure = (error) => ({
-  type: type.USER_LOGIN_FAILURE,
+  type: USER_LOGIN_FAILURE,
   error,
 });
 
@@ -158,7 +179,7 @@ export const toFavorites = (userId, bookId) => {
   return async (dispatch) => {
     dispatch(toFavoritesStarted());
     try {
-      const response = await axiosInstance.post(`users/addtofavorites`, {
+      const response = await axiosInstance.post("users/addtofavorites", {
         userId,
         bookId,
       });
@@ -174,16 +195,16 @@ export const toFavorites = (userId, bookId) => {
 };
 
 export const toFavoritesSuccess = (data) => ({
-  type: type.ADD_FAVORITES_SUCCESS,
+  type: ADD_FAVORITES_SUCCESS,
   data,
 });
 
 export const toFavoritesStarted = () => ({
-  type: type.ADD_FAVORITES_STARTED,
+  type: ADD_FAVORITES_STARTED,
 });
 
 export const toFavoritesFailure = (error) => ({
-  type: type.ADD_FAVORITES_FAILURE,
+  type: ADD_FAVORITES_FAILURE,
   error,
 });
 
@@ -191,7 +212,7 @@ export const toShopList = (userId, bookId) => {
   return async (dispatch) => {
     dispatch(toShopListStarted());
     try {
-      const response = await axiosInstance.post(`/users/addtoshoplist`, {
+      const response = await axiosInstance.post("/users/addtoshoplist", {
         userId,
         bookId,
       });
@@ -206,15 +227,15 @@ export const toShopList = (userId, bookId) => {
 };
 
 export const toShopListSuccess = (data) => ({
-  type: type.ADD_SHOPLIST_SUCCESS,
+  type: ADD_SHOPLIST_SUCCESS,
   data,
 });
 
 export const toShopListStarted = () => ({
-  type: type.ADD_SHOPLIST_STARTED,
+  type: ADD_SHOPLIST_STARTED,
 });
 
 export const toShopListFailure = (error) => ({
-  type: type.ADD_SHOPLIST_FAILURE,
+  type: ADD_SHOPLIST_FAILURE,
   error,
 });

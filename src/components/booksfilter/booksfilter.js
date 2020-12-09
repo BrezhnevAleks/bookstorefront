@@ -1,5 +1,6 @@
 import React from "react";
 import Select from "react-select";
+import PropTypes from "prop-types";
 
 class BooksFilter extends React.Component {
   render() {
@@ -36,3 +37,7 @@ class BooksFilter extends React.Component {
   }
 }
 export default BooksFilter;
+
+BooksFilter.propTypes = {
+  handleOnChangeFilter: PropTypes.func.isRequired,
+};

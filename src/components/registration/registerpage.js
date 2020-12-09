@@ -1,7 +1,7 @@
 import React from "react";
-import connect from "./connect";
 import { Link } from "react-router-dom";
 import "../login/style.css";
+import PropTypes from "prop-types";
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class RegisterPage extends React.Component {
       case "password":
         return this.setState({ password: e.target.value });
       default:
-        return;
+        return null;
     }
   };
 
@@ -81,4 +81,9 @@ class RegisterPage extends React.Component {
     );
   }
 }
-export default connect(RegisterPage);
+export default RegisterPage;
+
+RegisterPage.propTypes = {
+  createUser: PropTypes.func.isRequired,
+  error: PropTypes.node.isRequired,
+};
