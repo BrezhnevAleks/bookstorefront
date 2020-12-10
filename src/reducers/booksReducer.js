@@ -1,33 +1,27 @@
 import {
   ADD_BOOKS,
   BOOKS_CONFIRM_COMPLETION,
-  BOOKS_FETCH_SUCCESS,
+  BOOKS_FETCH_FINISH,
   BOOKS_FETCH_STARTED,
-  BOOKS_FETCH_FAILURE,
-  BOOK_CREATE_SUCCESS,
+  BOOK_CREATE_FINISH,
   BOOK_CREATE_STARTED,
-  BOOK_CREATE_FAILURE,
-  BOOK_CHANGE_SUCCESS,
+  BOOK_CHANGE_FINISH,
   BOOK_CHANGE_STARTED,
-  BOOK_CHANGE_FAILURE,
-  ADD_REVIEW_SUCCESS,
+  ADD_REVIEW_FINISH,
   ADD_REVIEW_STARTED,
-  ADD_REVIEW_FAILURE,
-  GET_REVIEWS_SUCCESS,
+  GET_REVIEWS_FINISH,
   GET_REVIEWS_STARTED,
-  GET_REVIEWS_FAILURE,
-  GENRES_FETCH_SUCCESS,
+  GENRES_FETCH_FINISH,
   GENRES_FETCH_STARTED,
-  GENRES_FETCH_FAILURE,
-  BOOK_FETCH_SUCCESS,
+  BOOK_FETCH_FINISH,
   BOOK_FETCH_STARTED,
-  BOOK_FETCH_FAILURE,
 } from "../constants";
 
 const booklist = (
   state = {
     loading: false,
     books: [],
+    pageCount: 0,
     genres: [],
     error: null,
     created: {},
@@ -58,18 +52,13 @@ const booklist = (
         ...state,
         loading: true,
       };
-    case BOOKS_FETCH_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        books: action.books,
-      };
-    case BOOKS_FETCH_FAILURE:
+    case BOOKS_FETCH_FINISH:
       return {
         ...state,
         loading: false,
         error: action.error,
+        books: action.books,
+        pageCount: action.pageCount,
       };
 
     case GENRES_FETCH_STARTED:
@@ -77,113 +66,78 @@ const booklist = (
         ...state,
         loading: true,
       };
-    case GENRES_FETCH_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        genres: action.genres,
-      };
-    case GENRES_FETCH_FAILURE:
+    case GENRES_FETCH_FINISH:
       return {
         ...state,
         loading: false,
         error: action.error,
+        genres: action.genres,
       };
     case BOOK_CREATE_STARTED:
       return {
         ...state,
         loading: true,
       };
-    case BOOK_CREATE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        created: action.data,
-        completed: action.completed,
-      };
-    case BOOK_CREATE_FAILURE:
+    case BOOK_CREATE_FINISH:
       return {
         ...state,
         loading: false,
         error: action.error,
+        created: action.data,
         completed: action.completed,
       };
+
     case BOOK_CHANGE_STARTED:
       return {
         ...state,
         loading: true,
       };
-    case BOOK_CHANGE_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        changed: action.data,
-        completed: action.completed,
-      };
-    case BOOK_CHANGE_FAILURE:
+    case BOOK_CHANGE_FINISH:
       return {
         ...state,
         loading: false,
         error: action.error,
+        changed: action.data,
         completed: action.completed,
       };
+
     case BOOK_FETCH_STARTED:
       return {
         ...state,
         loading: true,
       };
-    case BOOK_FETCH_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        book: action.book,
-      };
-    case BOOK_FETCH_FAILURE:
+    case BOOK_FETCH_FINISH:
       return {
         ...state,
         loading: false,
         error: action.error,
+        book: action.book,
       };
-    case GET_REVIEWS_SUCCESS:
+    case GET_REVIEWS_FINISH:
       return {
         ...state,
         loading: false,
         reviews: action.data,
         rate: action.rate,
+        error: action.error,
       };
     case GET_REVIEWS_STARTED:
       return {
         ...state,
         loading: false,
-        error: action.error,
       };
-    case GET_REVIEWS_FAILURE:
+
+    case ADD_REVIEW_FINISH:
       return {
         ...state,
         loading: false,
         error: action.error,
-      };
-    case ADD_REVIEW_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
         review: action.data,
       };
     case ADD_REVIEW_STARTED:
       return {
         ...state,
         loading: true,
-      };
-    case ADD_REVIEW_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.error,
       };
     default:
       return state;

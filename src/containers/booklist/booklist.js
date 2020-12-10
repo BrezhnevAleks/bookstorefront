@@ -14,7 +14,7 @@ import "./style.css";
 class BookList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { genre: "all", filter: "id", page: 1 };
+    this.state = { genre: 0, filter: "id", page: 1, perPage: 4 };
   }
 
   handleOnChangeFilter = (e) => {
@@ -28,9 +28,9 @@ class BookList extends React.Component {
       filter: e.value,
     });
 
-    const { genre, page } = this.state;
+    const { genre, page, perPage } = this.state;
     history.push(`/?genre=${genre}&filter=${e.value}&page=${page}`);
-    getBooks(e.value, genre, page);
+    getBooks(e.value, genre, page, perPage);
   };
 
   componentDidMount() {
@@ -42,10 +42,10 @@ class BookList extends React.Component {
       getBooks,
       history,
     } = this.props;
-    const { filter, genre, page } = this.state;
+    const { filter, genre, page, perPage } = this.state;
 
     getGenres();
-    getBooks(filter, genre, page);
+    getBooks(filter, genre, page, perPage);
     history.push(`/?genre=${genre}&filter=${filter}&page=${page}`);
     // eslint-disable-next-line react/prop-types
     // eslint-disable-next-line no-console
@@ -55,20 +55,20 @@ class BookList extends React.Component {
   handlePageChange = (event, value) => {
     this.setState({ page: value });
 
-    const { filter, genre } = this.state;
+    const { filter, genre, perPage } = this.state;
     const { history, getBooks } = this.props;
 
-    getBooks(filter, genre, value);
+    getBooks(filter, genre, value, perPage);
     history.push(`/?genre=${genre}&filter=${filter}&page=${value}`);
   };
 
   handleOnClickGenre = (e, value) => {
     this.setState({ genre: value });
 
-    const { filter, page } = this.state;
+    const { filter, page, perPage } = this.state;
     const { getBooks, history } = this.props;
 
-    getBooks(filter, value, page);
+    getBooks(filter, value, page, perPage);
     history.push(`/?genre=${value}&filter=${filter}$page=${page}`);
   };
 
@@ -80,6 +80,7 @@ class BookList extends React.Component {
       user,
       toFavorites,
       toShopList,
+      pageCount,
     } = this.props;
     const { page } = this.state;
     return (
@@ -110,7 +111,7 @@ class BookList extends React.Component {
               <h3 className="categories">Категории</h3>
               <li
                 className="genre-filter"
-                onClick={(e) => this.handleOnClickGenre(e, "all")}
+                onClick={(e) => this.handleOnClickGenre(e, 0)}
                 value = {"all"}
               >
                 Все
@@ -118,7 +119,7 @@ class BookList extends React.Component {
               {genres.map((item) => (
                 <li
                   key={item.id}
-                  onClick={(e) => this.handleOnClickGenre(e, item.value)}
+                  onClick={(e) => this.handleOnClickGenre(e, item.id)}
                   value={item.value}
                   className="genre-filter"
                 >
@@ -132,7 +133,7 @@ class BookList extends React.Component {
                 <span className="booklist-count">
                   {`Книг доступно: ${books.length}`}
                 </span>
-                <Pagination count={10} page={page} onChange={this.handlePageChange}/>
+                <Pagination count={pageCount} size={"large"} page={page} onChange={this.handlePageChange}/>
                 <BooksFilter
                   books={books}
                   handleOnChangeFilter={this.handleOnChangeFilter}
@@ -179,4 +180,5 @@ BookList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  pageCount: PropTypes.number.isRequired,
 };

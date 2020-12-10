@@ -21,20 +21,10 @@ class ChangeBook extends React.Component {
   }
 
   handleChange = (e) => {
-    switch (e.target.name) {
-      case "image":
-        return this.setState({ bookcover: e.target.files[0] });
-      case "name":
-        return this.setState({ name: e.target.value });
-      case "author":
-        return this.setState({ author: e.target.value });
-      case "price":
-        return this.setState({ price: e.target.value });
-      case "description":
-        return this.setState({ description: e.target.value });
-      default:
-        return null;
+    if (e.target.name === "bookcover") {
+      return this.setState({ [e.target.name]: e.target.files[0] });
     }
+    return this.setState({ [e.target.name]: e.target.value });
   };
 
   // handleChangeSelect = (e) => {
@@ -118,13 +108,13 @@ class ChangeBook extends React.Component {
               encType="multipart/form-data"
               onSubmit={this.handleSubmit}
             >
-              <label htmlFor="image" className="new-book-image">
+              <label htmlFor="bookcover" className="new-book-image">
                 {bookcover ? bookcover.name : "Загрузить обложку для книги"}
               </label>
               <input
                 type="file"
-                id="image"
-                name="image"
+                id="bookcover"
+                name="bookcover"
                 onChange={this.handleChange}
               />
               <input

@@ -5,24 +5,18 @@ import {
   ADD_USER,
   USER_CONFIRM_COMPLETION,
   SIGN_OUT_USER,
-  GET_BY_TOKEN_SUCCESS,
+  GET_BY_TOKEN_FINISH,
   GET_BY_TOKEN_STARTED,
-  GET_BY_TOKEN_FAILURE,
-  USER_CREATE_SUCCESS,
+  USER_CREATE_FINISH,
   USER_CREATE_STARTED,
-  USER_CREATE_FAILURE,
-  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FINISH,
   USER_UPDATE_STARTED,
-  USER_UPDATE_FAILURE,
-  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FINISH,
   USER_LOGIN_STARTED,
-  USER_LOGIN_FAILURE,
-  ADD_FAVORITES_SUCCESS,
+  ADD_FAVORITES_FINISH,
   ADD_FAVORITES_STARTED,
-  ADD_FAVORITES_FAILURE,
-  ADD_SHOPLIST_SUCCESS,
+  ADD_SHOPLIST_FINISH,
   ADD_SHOPLIST_STARTED,
-  ADD_SHOPLIST_FAILURE,
 } from "../constants";
 
 export const addUser = (data) => ({
@@ -43,36 +37,32 @@ export const getUserByToken = () => {
   return async (dispatch) => {
     dispatch(getUserByStarted());
     try {
-      const response = await axiosInstance.get("crud/bytoken");
+      const response = await axiosInstance.get("auth/bytoken");
       const {
         data: { user },
       } = response;
-      dispatch(getUserBySuccess(user));
+      dispatch(getUserByFinish(user, null));
     } catch (err) {
-      dispatch(getUserByFailure(err.message));
+      dispatch(getUserByFinish({}, err.message));
     }
   };
 };
 
-export const getUserBySuccess = (data) => ({
-  type: GET_BY_TOKEN_SUCCESS,
+export const getUserByFinish = (data, error) => ({
+  type: GET_BY_TOKEN_FINISH,
   data,
+  error,
 });
 
 export const getUserByStarted = () => ({
   type: GET_BY_TOKEN_STARTED,
 });
 
-export const getUserByFailure = (error) => ({
-  type: GET_BY_TOKEN_FAILURE,
-  error,
-});
-
 export const createUser = (login, email, password) => {
   return async (dispatch) => {
     dispatch(createStarted());
     try {
-      const response = await axios.post("http://localhost:4000/crud/create", {
+      const response = await axios.post("http://localhost:4000/auth/create", {
         login,
         email,
         password,
@@ -81,35 +71,31 @@ export const createUser = (login, email, password) => {
       const {
         data: { user, token },
       } = response;
-      dispatch(createSuccess(user));
+      dispatch(createFinish(user, null));
 
       localStorage.setItem("authToken", token);
       setAuthToken(token);
     } catch (err) {
-      dispatch(createFailure(err.message));
+      dispatch(createFinish({}, err.message));
     }
   };
 };
 
-export const createSuccess = (data) => ({
-  type: USER_CREATE_SUCCESS,
+export const createFinish = (data, error) => ({
+  type: USER_CREATE_FINISH,
   data,
+  error,
 });
 
 export const createStarted = () => ({
   type: USER_CREATE_STARTED,
 });
 
-export const createFailure = (error) => ({
-  type: USER_CREATE_FAILURE,
-  error,
-});
-
 export const updateUser = (id, login, email, password) => {
   return async (dispatch) => {
     dispatch(updateStarted());
     try {
-      const response = await axiosInstance.post("crud/update", {
+      const response = await axiosInstance.patch("user/update", {
         id,
         login,
         email,
@@ -118,17 +104,18 @@ export const updateUser = (id, login, email, password) => {
       const {
         data: { user },
       } = response;
-      dispatch(updateSuccess(user));
+      dispatch(updateFinish(user, null));
       dispatch(addUser(user));
     } catch (err) {
-      dispatch(updateFailure(err.message));
+      dispatch(updateFinish({}, err.message));
     }
   };
 };
 
-export const updateSuccess = (data) => ({
-  type: USER_UPDATE_SUCCESS,
+export const updateFinish = (data, error) => ({
+  type: USER_UPDATE_FINISH,
   data,
+  error,
   completed: true,
 });
 
@@ -136,50 +123,41 @@ export const updateStarted = () => ({
   type: USER_UPDATE_STARTED,
 });
 
-export const updateFailure = (error) => ({
-  type: USER_UPDATE_FAILURE,
-  error,
-});
-
 export const loginUser = (email, password) => {
   return async (dispatch) => {
     dispatch(loginStarted());
     try {
-      const response = await axios.post("http://localhost:4000/crud/login", {
+      const response = await axios.post("http://localhost:4000/auth/login", {
         email,
         password,
       });
       const {
         data: { user, token },
       } = response;
-      dispatch(loginSuccess(user));
+      dispatch(loginFinish(user, null));
       localStorage.setItem("authToken", token);
       setAuthToken(token);
     } catch (err) {
-      dispatch(loginFailure(err.message));
+      dispatch(loginFinish({}, err.message));
     }
   };
 };
 
-export const loginSuccess = (data) => ({
-  type: USER_LOGIN_SUCCESS,
+export const loginFinish = (data, error) => ({
+  type: USER_LOGIN_FINISH,
   data,
+  error,
 });
 
 export const loginStarted = () => ({
   type: USER_LOGIN_STARTED,
 });
 
-export const loginFailure = (error) => ({
-  type: USER_LOGIN_FAILURE,
-  error,
-});
-
 export const toFavorites = (userId, bookId) => {
   return async (dispatch) => {
     dispatch(toFavoritesStarted());
     try {
-      const response = await axiosInstance.post("users/addtofavorites", {
+      const response = await axiosInstance.post("booklists/addtofavorites", {
         userId,
         bookId,
       });
@@ -187,55 +165,47 @@ export const toFavorites = (userId, bookId) => {
         data: { favorites },
       } = response;
 
-      dispatch(toFavoritesSuccess(favorites));
+      dispatch(toFavoritesFinish(favorites, null));
     } catch (err) {
-      dispatch(toFavoritesFailure(err.message));
+      dispatch(toFavoritesFinish([], err.message));
     }
   };
 };
 
-export const toFavoritesSuccess = (data) => ({
-  type: ADD_FAVORITES_SUCCESS,
+export const toFavoritesFinish = (data, error) => ({
+  type: ADD_FAVORITES_FINISH,
   data,
+  error,
 });
 
 export const toFavoritesStarted = () => ({
   type: ADD_FAVORITES_STARTED,
 });
 
-export const toFavoritesFailure = (error) => ({
-  type: ADD_FAVORITES_FAILURE,
-  error,
-});
-
 export const toShopList = (userId, bookId) => {
   return async (dispatch) => {
     dispatch(toShopListStarted());
     try {
-      const response = await axiosInstance.post("/users/addtoshoplist", {
+      const response = await axiosInstance.post("/booklists/addtoshoplist", {
         userId,
         bookId,
       });
       const {
         data: { shoplist },
       } = response;
-      dispatch(toShopListSuccess(shoplist));
+      dispatch(toShopListFinish(shoplist, null));
     } catch (err) {
-      dispatch(toShopListFailure(err.message));
+      dispatch(toShopListFinish([], err.message));
     }
   };
 };
 
-export const toShopListSuccess = (data) => ({
-  type: ADD_SHOPLIST_SUCCESS,
+export const toShopListFinish = (data, error) => ({
+  type: ADD_SHOPLIST_FINISH,
   data,
+  error,
 });
 
 export const toShopListStarted = () => ({
   type: ADD_SHOPLIST_STARTED,
-});
-
-export const toShopListFailure = (error) => ({
-  type: ADD_SHOPLIST_FAILURE,
-  error,
 });
