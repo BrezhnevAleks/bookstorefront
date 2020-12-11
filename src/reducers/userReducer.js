@@ -10,6 +10,8 @@ import {
   USER_UPDATE_STARTED,
   USER_LOGIN_FINISH,
   USER_LOGIN_STARTED,
+  FAVORITES_FETCH_STARTED,
+  FAVORITES_FETCH_FINISH,
   ADD_FAVORITES_FINISH,
   ADD_FAVORITES_STARTED,
   ADD_SHOPLIST_FINISH,
@@ -19,6 +21,8 @@ import {
 const defaultState = {
   loading: false,
   data: {},
+  favorites: [],
+  favoritesPageCount: 0,
   error: null,
   completed: false,
 };
@@ -88,6 +92,21 @@ const user = (state = defaultState, action) => {
         error: action.error,
         data: action.data,
       };
+
+    case FAVORITES_FETCH_STARTED:
+      return {
+        ...state,
+        loading: true,
+      };
+    case FAVORITES_FETCH_FINISH:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+        favorites: action.favorites,
+        favoritesPageCount: action.favoritesPageCount,
+      };
+
     case ADD_FAVORITES_STARTED:
       return {
         ...state,
@@ -99,7 +118,7 @@ const user = (state = defaultState, action) => {
         ...state,
         loading: false,
         error: action.error,
-        data: { ...state.data, favorites: action.data },
+        favorites: action.data,
       };
     case ADD_SHOPLIST_STARTED:
       return {

@@ -30,7 +30,6 @@ module.exports = {
   parser: "babel-eslint",
   rules: {
     "import/no-cycle": 0,
-    "linebreak-style": 0,
     quotes: ["error", "double"],
     "react/forbid-prop-types": 2,
     "react/prop-types": 2,

@@ -15,12 +15,14 @@ import {
   GENRES_FETCH_STARTED,
   BOOK_FETCH_FINISH,
   BOOK_FETCH_STARTED,
+  FAVORITES_FOR_BOOKLIST,
 } from "../constants";
 
 const booklist = (
   state = {
     loading: false,
     books: [],
+    bookCount: 0,
     pageCount: 0,
     genres: [],
     error: null,
@@ -59,6 +61,7 @@ const booklist = (
         error: action.error,
         books: action.books,
         pageCount: action.pageCount,
+        bookCount: action.bookCount,
       };
 
     case GENRES_FETCH_STARTED:
@@ -125,6 +128,14 @@ const booklist = (
       return {
         ...state,
         loading: false,
+      };
+
+    case FAVORITES_FOR_BOOKLIST:
+      return {
+        ...state,
+        books: state.books.map((item) =>
+          // eslint-disable-next-line implicit-arrow-linebreak
+          (item.id === action.id ? { ...item, favorite: !item.favorite } : item)),
       };
 
     case ADD_REVIEW_FINISH:

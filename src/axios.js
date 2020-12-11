@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 export const setAuthToken = (token) => {
   if (token) {
-    axiosInstance.defaults.headers.common.Authorization = token;
+    axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else {
     delete axiosInstance.defaults.headers.common.Authorization;
   }
@@ -18,8 +18,7 @@ export const setAuthToken = (token) => {
 
 axiosInstance.interceptors.request.use(
   (req) => {
-    req.headers.Authorization = localStorage.getItem("authToken");
-
+    req.headers.Authorization = `Bearer ${localStorage.getItem("authToken") || " "}`;
     if (axiosInstance.defaults.headers.common.Authorization) return req;
     throw new Error("the token is not available");
   },

@@ -1,16 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Grid } from "@material-ui/core";
+import { Pagination } from "@material-ui/lab";
 import "./style.css";
 import BookItem from "../../components/bookitem/bookitem";
 import Header from "../header/header";
 import connect from "./connect";
 
 class FavoritesList extends React.Component {
-  render() {
-    const { favorites, user, toFavorites, toShopList } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = { page: 1, perPage: 4 };
+  }
 
-    return (
+  handlePageChange = (event, value) => {
+    this.setState({ page: value });
+    const { perPage } = this.state;
+    const { getFavorites, user: { id } } = this.props;
+    // const { history, getBooks } = this.props;
+
+    getFavorites(id, value, perPage);
+    // history.push(`/?genre=${genre}&filter=${filter}&page=${value}`);
+  };
+
+ componentDidMount = () => {
+   const { getFavorites, user: { id } } = this.props;
+   const { page, perPage } = this.state;
+   getFavorites(id, page, perPage);
+ }
+
+ render() {
+   const {
+     favorites, user, toFavorites, toShopList,
+     favoritesPageCount, favoritesForBooklist,
+   } = this.props;
+   const { page } = this.state;
+   return (
       <div>
         <Header />
 
@@ -21,6 +46,7 @@ class FavoritesList extends React.Component {
                 <span className="booklist-count">
                   {`Книг в избранном: ${favorites.length}`}
                 </span>
+                <Pagination count={favoritesPageCount} size={"large"} page={page} onChange={this.handlePageChange}/>
               </Grid>
               {favorites.map((shopItem) => (
                 <Grid item cellHeight="auto" xs={3} key={shopItem.id}>
@@ -31,6 +57,7 @@ class FavoritesList extends React.Component {
                     user={user}
                     toFavorites={toFavorites}
                     toShopList={toShopList}
+                    favoritesForBooklist ={favoritesForBooklist}
                   />
                 </Grid>
               ))}
@@ -42,13 +69,15 @@ class FavoritesList extends React.Component {
           </div>
         )}
       </div>
-    );
-  }
+   );
+ }
 }
 
 export default connect(FavoritesList);
 
 FavoritesList.propTypes = {
+  favoritesForBooklist: PropTypes.func.isRequired,
+  getFavorites: PropTypes.func.isRequired,
   toFavorites: PropTypes.func.isRequired,
   toShopList: PropTypes.func.isRequired,
   favorites: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -59,4 +88,5 @@ FavoritesList.propTypes = {
         PropTypes.arrayOf(PropTypes.object)],
     ),
   ).isRequired,
+  favoritesPageCount: PropTypes.number.isRequired,
 };

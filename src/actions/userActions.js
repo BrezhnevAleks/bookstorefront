@@ -1,5 +1,4 @@
 import axios from "axios";
-// eslint-disable-next-line import/no-cycle
 import { axiosInstance, setAuthToken } from "../axios";
 import {
   ADD_USER,
@@ -13,6 +12,8 @@ import {
   USER_UPDATE_STARTED,
   USER_LOGIN_FINISH,
   USER_LOGIN_STARTED,
+  FAVORITES_FETCH_STARTED,
+  FAVORITES_FETCH_FINISH,
   ADD_FAVORITES_FINISH,
   ADD_FAVORITES_STARTED,
   ADD_SHOPLIST_FINISH,
@@ -151,6 +152,36 @@ export const loginFinish = (data, error) => ({
 
 export const loginStarted = () => ({
   type: USER_LOGIN_STARTED,
+});
+
+export const getFavorites = (id, page = 0, perPage = 0) => {
+  return async (dispatch) => {
+    dispatch(favoritesFetchStarted());
+    try {
+      const response = await axiosInstance.get("booklists/getfavorites", {
+        params: {
+          id,
+          page,
+          perPage,
+        },
+      });
+      const { data: { favorites, pageCount } } = response;
+      dispatch(favoritesFetchFinish(favorites, pageCount, null));
+    } catch (err) {
+      dispatch(favoritesFetchFinish([], 0, err.message));
+    }
+  };
+};
+
+export const favoritesFetchFinish = (favorites, favoritesPageCount, error) => ({
+  type: FAVORITES_FETCH_FINISH,
+  favorites,
+  favoritesPageCount,
+  error,
+});
+
+export const favoritesFetchStarted = () => ({
+  type: FAVORITES_FETCH_STARTED,
 });
 
 export const toFavorites = (userId, bookId) => {

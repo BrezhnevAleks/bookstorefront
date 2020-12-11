@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
-// import { Link } from "react-router-dom";
 import { Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import BookItem from "../../components/bookitem/bookitem";
@@ -19,10 +18,7 @@ class BookList extends React.Component {
 
   handleOnChangeFilter = (e) => {
     const {
-      // match: {
-      //   params: { value },
-      // },
-      getBooks, history,
+      getBooks, history, user: { id },
     } = this.props;
     this.setState({
       filter: e.value,
@@ -30,35 +26,30 @@ class BookList extends React.Component {
 
     const { genre, page, perPage } = this.state;
     history.push(`/?genre=${genre}&filter=${e.value}&page=${page}`);
-    getBooks(e.value, genre, page, perPage);
+    getBooks(e.value, genre, page, perPage, id);
   };
 
   componentDidMount() {
     const {
-      // match: {
-      //   params: { value },
-      // },
       getGenres,
       getBooks,
       history,
+      user: { id },
     } = this.props;
     const { filter, genre, page, perPage } = this.state;
 
     getGenres();
-    getBooks(filter, genre, page, perPage);
+    getBooks(filter, genre, page, perPage, id);
     history.push(`/?genre=${genre}&filter=${filter}&page=${page}`);
-    // eslint-disable-next-line react/prop-types
-    // eslint-disable-next-line no-console
-    // console.log(this.props.match);
   }
 
   handlePageChange = (event, value) => {
     this.setState({ page: value });
 
     const { filter, genre, perPage } = this.state;
-    const { history, getBooks } = this.props;
+    const { history, getBooks, user: { id } } = this.props;
 
-    getBooks(filter, genre, value, perPage);
+    getBooks(filter, genre, value, perPage, id);
     history.push(`/?genre=${genre}&filter=${filter}&page=${value}`);
   };
 
@@ -66,9 +57,9 @@ class BookList extends React.Component {
     this.setState({ genre: value });
 
     const { filter, page, perPage } = this.state;
-    const { getBooks, history } = this.props;
+    const { getBooks, history, user: { id } } = this.props;
 
-    getBooks(filter, value, page, perPage);
+    getBooks(filter, value, page, perPage, id);
     history.push(`/?genre=${value}&filter=${filter}$page=${page}`);
   };
 
@@ -76,11 +67,13 @@ class BookList extends React.Component {
     const {
       genres,
       books,
+      bookCount,
       loading,
       user,
       toFavorites,
       toShopList,
       pageCount,
+      favoritesForBooklist,
     } = this.props;
     const { page } = this.state;
     return (
@@ -131,7 +124,7 @@ class BookList extends React.Component {
             <Grid container item xs={9} cellHeight="auto" spacing={3}>
               <Grid item xs={12} className="booklist-header">
                 <span className="booklist-count">
-                  {`Книг доступно: ${books.length}`}
+                  {`Книг доступно: ${bookCount}`}
                 </span>
                 <Pagination count={pageCount} size={"large"} page={page} onChange={this.handlePageChange}/>
                 <BooksFilter
@@ -148,6 +141,7 @@ class BookList extends React.Component {
                     user={user}
                     toFavorites={toFavorites}
                     toShopList={toShopList}
+                    favoritesForBooklist ={favoritesForBooklist}
                   />
                 </Grid>
               ))}
@@ -162,13 +156,13 @@ class BookList extends React.Component {
 export default withRouter(connect(BookList));
 
 BookList.propTypes = {
+  favoritesForBooklist: PropTypes.func.isRequired,
   getGenres: PropTypes.func.isRequired,
   getBooks: PropTypes.func.isRequired,
   toFavorites: PropTypes.func.isRequired,
   toShopList: PropTypes.func.isRequired,
   books: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
-  //  match: PropTypes.objectOf(PropTypes.string).isRequired,
   user: PropTypes.objectOf(
     PropTypes.oneOfType(
       [PropTypes.number,
@@ -181,4 +175,5 @@ BookList.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   pageCount: PropTypes.number.isRequired,
+  bookCount: PropTypes.number.isRequired,
 };

@@ -50,7 +50,7 @@ class NewBook extends React.Component {
   };
 
   handleChangeSelect = (e) => {
-    this.setState({ genre: e.value });
+    this.setState({ genre: e.id });
   };
 
   handleSubmit = (e) => {

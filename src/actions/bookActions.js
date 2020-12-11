@@ -16,6 +16,7 @@ import {
   GENRES_FETCH_STARTED,
   BOOK_FETCH_FINISH,
   BOOK_FETCH_STARTED,
+  FAVORITES_FOR_BOOKLIST,
 } from "../constants";
 
 export const addBooks = (data) => ({
@@ -28,7 +29,7 @@ export const booksConfirmation = () => ({
   completed: false,
 });
 
-export const getBooks = (filter = "id", genre = 0, page = 1, perPage = 4) => {
+export const getBooks = (filter = "id", genre = 0, page = 1, perPage = 4, id) => {
   return async (dispatch) => {
     dispatch(booksFetchStarted());
     try {
@@ -38,10 +39,11 @@ export const getBooks = (filter = "id", genre = 0, page = 1, perPage = 4) => {
           genre,
           page,
           perPage,
+          id,
         },
       });
-      const { data: { books, pageCount } } = response;
-      dispatch(booksFetchFinish(books, pageCount, null));
+      const { data: { books, pageCount, bookCount } } = response;
+      dispatch(booksFetchFinish(books, pageCount, bookCount, null));
       dispatch(addBooks(books));
     } catch (err) {
       dispatch(booksFetchFinish([], 0, err.message));
@@ -49,10 +51,11 @@ export const getBooks = (filter = "id", genre = 0, page = 1, perPage = 4) => {
   };
 };
 
-export const booksFetchFinish = (books, pageCount, error) => ({
+export const booksFetchFinish = (books, pageCount, bookCount, error) => ({
   type: BOOKS_FETCH_FINISH,
   books,
   pageCount,
+  bookCount,
   error,
 });
 
@@ -224,4 +227,9 @@ export const genresFetchFinish = (genres, error) => ({
 
 export const genresFetchStarted = () => ({
   type: GENRES_FETCH_STARTED,
+});
+
+export const favoritesForBooklist = (id) => ({
+  type: FAVORITES_FOR_BOOKLIST,
+  id,
 });

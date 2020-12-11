@@ -1,10 +1,10 @@
 import { connect } from "react-redux";
-import { getGenres, getBooks } from "../../actions/bookActions";
-import { toFavorites, toShopList } from "../../actions/userActions";
+import { getGenres, getBooks, favoritesForBooklist } from "../../actions/bookActions";
+import { toFavorites, toShopList, getFavorites } from "../../actions/userActions";
 
 const mapStateToProps = ({
   user: { data },
-  booklist: { books, genres, loading, pageCount },
+  booklist: { books, genres, loading, pageCount, bookCount },
 }) => {
   return {
     user: data,
@@ -12,6 +12,7 @@ const mapStateToProps = ({
     genres,
     loading,
     pageCount,
+    bookCount,
   };
 };
 
@@ -20,6 +21,8 @@ const mapDispatchToProps = {
   getBooks,
   toFavorites,
   toShopList,
+  getFavorites,
+  favoritesForBooklist,
 };
 
 export default (container) => connect(mapStateToProps, mapDispatchToProps)(container);

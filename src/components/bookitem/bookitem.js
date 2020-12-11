@@ -11,9 +11,9 @@ import defaultCover from "../../images/defaultCover.png";
 
 class BookItem extends React.Component {
   handleOnClickLike = () => {
-    const { item, user, toFavorites } = this.props;
-
+    const { item, user, toFavorites, favoritesForBooklist } = this.props;
     toFavorites(user.id, item.id);
+    favoritesForBooklist(item.id);
   };
 
   handleOnClickToShoplist = () => {
@@ -26,7 +26,7 @@ class BookItem extends React.Component {
     const {
       item,
       item: { id, name, author, price, rating, picture },
-      user: { favorites, shoplist },
+      user: { shoplist },
     } = this.props;
 
     return (
@@ -46,7 +46,7 @@ class BookItem extends React.Component {
             className="like-button"
             onClick={this.handleOnClickLike}
             icon={
-              favorites.some((favorittesItem) => favorittesItem.id === item.id)
+              item.favorite
                 ? solidHeart
                 : regHeart
             }
@@ -78,6 +78,7 @@ class BookItem extends React.Component {
 export default BookItem;
 
 BookItem.propTypes = {
+  favoritesForBooklist: PropTypes.func.isRequired,
   toFavorites: PropTypes.func.isRequired,
   toShopList: PropTypes.func.isRequired,
   user: PropTypes.objectOf(
