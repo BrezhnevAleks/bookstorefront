@@ -63,6 +63,21 @@ class BookList extends React.Component {
     history.push(`/?genre=${value}&filter=${filter}$page=${page}`);
   };
 
+  handleLikeClick = (id) => {
+    const {
+      user, toFavorites,
+      favoritesForBooklist,
+    } = this.props;
+    favoritesForBooklist(id);
+    toFavorites(user.id, id);
+  };
+
+  handleShoplistClick = (id) => {
+    const { user, toShopList, shoplistForBooklist } = this.props;
+    shoplistForBooklist(id);
+    toShopList(user.id, id);
+  };
+
   render() {
     const {
       genres,
@@ -70,12 +85,9 @@ class BookList extends React.Component {
       bookCount,
       loading,
       user,
-      toFavorites,
-      toShopList,
       pageCount,
-      favoritesForBooklist,
     } = this.props;
-    const { page } = this.state;
+    const { page, perPage } = this.state;
     return (
       <div>
         <Header />
@@ -139,9 +151,10 @@ class BookList extends React.Component {
                     item={item}
                     key={item.id}
                     user={user}
-                    toFavorites={toFavorites}
-                    toShopList={toShopList}
-                    favoritesForBooklist ={favoritesForBooklist}
+                    handleLikeClick ={this.handleLikeClick}
+                    handleShoplistClick ={this.handleShoplistClick}
+                    page={page}
+                    perPage={perPage}
                   />
                 </Grid>
               ))}
@@ -157,6 +170,7 @@ export default withRouter(connect(BookList));
 
 BookList.propTypes = {
   favoritesForBooklist: PropTypes.func.isRequired,
+  shoplistForBooklist: PropTypes.func.isRequired,
   getGenres: PropTypes.func.isRequired,
   getBooks: PropTypes.func.isRequired,
   toFavorites: PropTypes.func.isRequired,

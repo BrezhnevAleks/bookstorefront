@@ -30,8 +30,7 @@ class App extends React.Component {
       ) : (
         <RegisterPage createUser={createUser} error={error} />
       );
-    // eslint-disable-next-line no-prototype-builtins
-    return data.hasOwnProperty("id") ? <Redirect to="/" /> : page;
+    return Object.prototype.hasOwnProperty.call(data, "id") ? <Redirect to="/" /> : page;
   }
 
   componentDidMount() {

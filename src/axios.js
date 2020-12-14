@@ -18,7 +18,7 @@ export const setAuthToken = (token) => {
 
 axiosInstance.interceptors.request.use(
   (req) => {
-    req.headers.Authorization = `Bearer ${localStorage.getItem("authToken") || " "}`;
+    req.headers.Authorization = `Bearer ${localStorage.getItem("authToken")}`;
     if (axiosInstance.defaults.headers.common.Authorization) return req;
     throw new Error("the token is not available");
   },

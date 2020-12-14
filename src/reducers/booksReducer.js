@@ -1,5 +1,4 @@
 import {
-  ADD_BOOKS,
   BOOKS_CONFIRM_COMPLETION,
   BOOKS_FETCH_FINISH,
   BOOKS_FETCH_STARTED,
@@ -16,6 +15,7 @@ import {
   BOOK_FETCH_FINISH,
   BOOK_FETCH_STARTED,
   FAVORITES_FOR_BOOKLIST,
+  SHOPLIST_FOR_BOOKLIST,
 } from "../constants";
 
 const booklist = (
@@ -37,18 +37,12 @@ const booklist = (
   action,
 ) => {
   switch (action.type) {
-    case ADD_BOOKS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        books: action.data,
-      };
     case BOOKS_CONFIRM_COMPLETION:
       return {
         ...state,
         completed: action.completed,
       };
+
     case BOOKS_FETCH_STARTED:
       return {
         ...state,
@@ -76,6 +70,7 @@ const booklist = (
         error: action.error,
         genres: action.genres,
       };
+
     case BOOK_CREATE_STARTED:
       return {
         ...state,
@@ -116,6 +111,7 @@ const booklist = (
         error: action.error,
         book: action.book,
       };
+
     case GET_REVIEWS_FINISH:
       return {
         ...state,
@@ -133,9 +129,17 @@ const booklist = (
     case FAVORITES_FOR_BOOKLIST:
       return {
         ...state,
-        books: state.books.map((item) =>
-          // eslint-disable-next-line implicit-arrow-linebreak
-          (item.id === action.id ? { ...item, favorite: !item.favorite } : item)),
+        books: state.books.map((item) => (item.id === action.id
+          ? { ...item, favorite: !item.favorite }
+          : item)),
+      };
+
+    case SHOPLIST_FOR_BOOKLIST:
+      return {
+        ...state,
+        books: state.books.map((item) => (item.id === action.id
+          ? { ...item, inShopList: !item.inShopList }
+          : item)),
       };
 
     case ADD_REVIEW_FINISH:

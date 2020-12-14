@@ -10,23 +10,12 @@ import { faPlus, faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 import defaultCover from "../../images/defaultCover.png";
 
 class BookItem extends React.Component {
-  handleOnClickLike = () => {
-    const { item, user, toFavorites, favoritesForBooklist } = this.props;
-    toFavorites(user.id, item.id);
-    favoritesForBooklist(item.id);
-  };
-
-  handleOnClickToShoplist = () => {
-    const { item, user, toShopList } = this.props;
-
-    toShopList(user.id, item.id);
-  };
-
   render() {
     const {
+      handleLikeClick,
+      handleShoplistClick,
       item,
       item: { id, name, author, price, rating, picture },
-      user: { shoplist },
     } = this.props;
 
     return (
@@ -34,9 +23,9 @@ class BookItem extends React.Component {
         <div className="item-header">
           <FontAwesomeIcon
             className="toShop-button"
-            onClick={this.handleOnClickToShoplist}
+            onClick={() => handleShoplistClick(item.id)}
             icon={
-              shoplist.some((shoplistItem) => shoplistItem.id === item.id)
+              item.inShopList
                 ? faShoppingBasket
                 : faPlus
             }
@@ -44,7 +33,7 @@ class BookItem extends React.Component {
           <h3 className="item-name">{name}</h3>
           <FontAwesomeIcon
             className="like-button"
-            onClick={this.handleOnClickLike}
+            onClick={() => handleLikeClick(item.id)}
             icon={
               item.favorite
                 ? solidHeart
@@ -78,16 +67,19 @@ class BookItem extends React.Component {
 export default BookItem;
 
 BookItem.propTypes = {
-  favoritesForBooklist: PropTypes.func.isRequired,
-  toFavorites: PropTypes.func.isRequired,
-  toShopList: PropTypes.func.isRequired,
-  user: PropTypes.objectOf(
-    PropTypes.oneOfType(
-      [PropTypes.number,
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.object)],
-    ),
-  ).isRequired,
+  handleLikeClick: PropTypes.func.isRequired,
+  handleShoplistClick: PropTypes.func.isRequired,
+  // favoritesForBooklist: PropTypes.func.isRequired,
+  // shoplistForBooklist: PropTypes.func.isRequired,
+  // toFavorites: PropTypes.func.isRequired,
+  // toShopList: PropTypes.func.isRequired,
+  // user: PropTypes.objectOf(
+  //   PropTypes.oneOfType(
+  //     [PropTypes.number,
+  //       PropTypes.string,
+  //       PropTypes.arrayOf(PropTypes.object)],
+  //   ),
+  // ).isRequired,
   item: PropTypes.objectOf(
     PropTypes.oneOfType(
       [PropTypes.number,
@@ -95,4 +87,6 @@ BookItem.propTypes = {
       ],
     ),
   ).isRequired,
+  // perPage: PropTypes.number.isRequired,
+  // page: PropTypes.number.isRequired,
 };

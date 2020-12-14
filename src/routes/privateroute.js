@@ -6,8 +6,7 @@ const PrivateRoute = ({ component: Component, user, ...rest }) => {
   return (
     <Route
       {...rest}
-      // eslint-disable-next-line no-prototype-builtins
-      render={(props) => (user.hasOwnProperty("id") ? (
+      render={(props) => (Object.prototype.hasOwnProperty.call(user, "id") ? (
           <Component {...props} />
       ) : (
           <Redirect to="/login" />

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { addReview, getReviews, getOneBook } from "../../actions/bookActions";
-import { toFavorites, toShopList } from "../../actions/userActions";
+import { toFavorites, toShopList } from "../../actions/listsActions";
 
 const mapStateToProps = ({
   booklist: { book, reviews, rate },

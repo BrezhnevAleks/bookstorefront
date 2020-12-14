@@ -1,9 +1,14 @@
 import { connect } from "react-redux";
-import { toFavorites, toShopList } from "../../actions/userActions";
+import { toFavorites, toShopList, getShoplist, favoritesChangeIcon } from "../../actions/listsActions";
 
-const mapStateToProps = ({ user: { data } }) => {
+const mapStateToProps = ({
+  user: { data },
+  lists: { shoplist, shoplistPageCount, shoplistCount },
+}) => {
   return {
-    shoplist: data.shoplist,
+    shoplist,
+    shoplistPageCount,
+    shoplistCount,
     user: data,
   };
 };
@@ -11,6 +16,8 @@ const mapStateToProps = ({ user: { data } }) => {
 const mapDispatchToProps = {
   toFavorites,
   toShopList,
+  getShoplist,
+  favoritesChangeIcon,
 };
 
 export default (container) => connect(mapStateToProps, mapDispatchToProps)(container);

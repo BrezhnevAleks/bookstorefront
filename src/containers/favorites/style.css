@@ -24,3 +24,12 @@
   font-weight: 700;
   color: rgb(204, 204, 204);
 }
+
+.delete-from-list{
+padding: 4px;
+margin: auto;
+width: 90%;
+border-radius: 5px 5px 0px 0px;
+background-color: rgb(129, 125, 125);
+font-size: 24px;
+}

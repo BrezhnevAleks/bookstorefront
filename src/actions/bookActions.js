@@ -1,6 +1,5 @@
 import { axiosInstance } from "../axios";
 import {
-  ADD_BOOKS,
   BOOKS_CONFIRM_COMPLETION,
   BOOKS_FETCH_FINISH,
   BOOKS_FETCH_STARTED,
@@ -17,12 +16,8 @@ import {
   BOOK_FETCH_FINISH,
   BOOK_FETCH_STARTED,
   FAVORITES_FOR_BOOKLIST,
+  SHOPLIST_FOR_BOOKLIST,
 } from "../constants";
-
-export const addBooks = (data) => ({
-  type: ADD_BOOKS,
-  data,
-});
 
 export const booksConfirmation = () => ({
   type: BOOKS_CONFIRM_COMPLETION,
@@ -44,7 +39,6 @@ export const getBooks = (filter = "id", genre = 0, page = 1, perPage = 4, id) =>
       });
       const { data: { books, pageCount, bookCount } } = response;
       dispatch(booksFetchFinish(books, pageCount, bookCount, null));
-      dispatch(addBooks(books));
     } catch (err) {
       dispatch(booksFetchFinish([], 0, err.message));
     }
@@ -231,5 +225,10 @@ export const genresFetchStarted = () => ({
 
 export const favoritesForBooklist = (id) => ({
   type: FAVORITES_FOR_BOOKLIST,
+  id,
+});
+
+export const shoplistForBooklist = (id) => ({
+  type: SHOPLIST_FOR_BOOKLIST,
   id,
 });
